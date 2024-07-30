@@ -3,18 +3,16 @@ import os
 from datetime import datetime
 from pathlib import Path
 
-to_create = f"log/logging.log"
+LOG_FILE = f"{datetime.now().strftime('%Y_%m_%d_%H_%M_%S')}.log"
 
-filepath = Path(to_create)
+log_path = os.path.join(os.getcwd(),'logs')
 
-filedir,filename = os.path.split(filepath)
+os.makedirs(log_path,exist_ok=True)
 
-if filedir != '':
-    os.makedirs(filedir,exist_ok=True)
+LOG_FILEPATH = os.path.join(log_path,LOG_FILE)
 
-if (not os.path.exists(filepath)) or (os.path.getsize() == 0):
-    with open(filepath,'w') as f:
-        pass
- 
-else:
-    print('file already exist')
+logging.basicConfig(
+    level=logging.INFO,
+    filename=LOG_FILEPATH,
+    format="[%(asctime)s] %(lineno)d %(name)s - %(levelname)s - %(message)s"
+)
